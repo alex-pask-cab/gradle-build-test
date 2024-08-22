@@ -1,0 +1,30 @@
+name: Check Available Processors
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check-processors:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Set up Java
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+    
+    - name: Run Java command
+      run: |
+        echo 'public class AvailableProcessors {' > AvailableProcessors.java
+        echo '    public static void main(String[] args) {' >> AvailableProcessors.java
+        echo '        int processors = Runtime.getRuntime().availableProcessors();' >> AvailableProcessors.java
+        echo '        System.out.println("Available processors: " + processors);' >> AvailableProcessors.java
+        echo '    }' >> AvailableProcessors.java
+        echo '}' >> AvailableProcessors.java
+
+        # Compile the Java code
+        javac AvailableProcessors.java
+        
+        # Run the compiled Java program
+        java AvailableProcessors
